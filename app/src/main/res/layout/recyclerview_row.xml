@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:elevation="200dp"
+    android:layout_margin="@dimen/image_margin"
+    android:background="@color/cardview_light_background">
+    <android.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        >
+        <ImageView
+            android:id="@+id/iv_activity_main_car_image"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+        <TextView
+            android:id="@+id/tv_activity_main_car_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_activity_main_price_mileage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_activity_main_location_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
+        <Button
+            android:textColor="@color/white"
+            android:background="@color/design_default_color_primary"
+            android:id="@+id/button_call_dealer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="CALL DEALER"/>
+
+    </android.widget.LinearLayout>
+</androidx.cardview.widget.CardView>
