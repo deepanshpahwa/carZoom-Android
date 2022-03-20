@@ -20,6 +20,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -37,7 +38,7 @@ public class Repository{
         return instance;
     }
 
-    public Observable<List<RelevantListingInfo>> makeCarQuery(Application application) {
+    public Observable<List<RelevantListingInfo>> makeCarQuery(Application application, CompositeDisposable disposable) {
 
         Realm realm = Realm.getDefaultInstance() ;
         Observable<List<RelevantListingInfo>> ret = null;
@@ -70,11 +71,12 @@ public class Repository{
             ret = makeNetworkCall();
             ret.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+
                     .subscribe(new Observer<List<RelevantListingInfo>>() {
                 @Override
                 public void onSubscribe(Disposable d) {
                     Log.d("TAG", "onSubscribe: in Repo");
-
+                    disposable.add(d);
                 }
 
                 @Override

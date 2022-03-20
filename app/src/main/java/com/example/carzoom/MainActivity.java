@@ -30,7 +30,7 @@ import io.realm.Realm;
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener{
 
     private static final String TAG = "class::MainActivity";
-    RecyclerView superListView;
+    RecyclerView carRecyvlerView;
     Context context;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     ImageView imageView;
@@ -50,11 +50,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 //                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
 
-        superListView = findViewById(R.id.simpleRecyclerView);
-        superListView.setLayoutManager(new LinearLayoutManager(context));
+        carRecyvlerView = findViewById(R.id.recycler_view_activity_main);
+        carRecyvlerView.setLayoutManager(new LinearLayoutManager(context));
+        View progressbar = findViewById(R.id.rl_activity_main_progress_bar);
 
         ResultsViewModel viewModel = new ViewModelProvider(this).get(ResultsViewModel.class);
-        Observable<List<RelevantListingInfo>> resultsObservable = viewModel.makeFutureQuery();
+        Observable<List<RelevantListingInfo>> resultsObservable = viewModel.makeFutureQuery(compositeDisposable);
         if (resultsObservable != null) {
             resultsObservable
                     .subscribeOn(Schedulers.io())
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
                         public void onNext(List<RelevantListingInfo> relevantListingInfos) {
                             Log.d(TAG, "onNext: got the response from server!");
                             Log.d(TAG, "onNext: " + relevantListingInfos.get(0));
+                            carRecyvlerView.setVisibility(View.VISIBLE);
+                            progressbar.setVisibility(View.GONE);
 //                        addDataToDatabase(relevantListingInfos);
                             displayData(relevantListingInfos);
                             //TODO hide loading screen
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         RecyclerViewAdapter adapter;
         adapter = new RecyclerViewAdapter(getBaseContext(), posts);
         adapter.setClickListener(this);
-        superListView.setAdapter(adapter);
+        carRecyvlerView.setAdapter(adapter);
     }
 
     @Override
