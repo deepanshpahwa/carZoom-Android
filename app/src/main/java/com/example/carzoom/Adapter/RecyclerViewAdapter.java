@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView carInfo;
         TextView carMileage;
         TextView carLocation;
-        Button callDealerButton;
+        TextView callDealerButton;
         ImageView carImageView;
         Context mContext;
 

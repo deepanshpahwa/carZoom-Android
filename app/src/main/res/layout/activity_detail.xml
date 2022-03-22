@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+
     tools:context=".DetailActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/image_margin">
+    android:layout_margin="@dimen/image_margin"
+    android:layout_marginBottom="100dp">
 
     <android.widget.LinearLayout
         android:id="@+id/ll_activity_detail_basic_info"
@@ -24,12 +28,14 @@
             android:id="@+id/tv_activity_detail_car_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_price_mileage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            style="@style/CarZoomTextView"/>
 
     </android.widget.LinearLayout>
 
@@ -47,99 +53,117 @@
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Location"/>
+            android:text="@string/location"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_location_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_excolor"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Exterior Color"/>
+            android:text="@string/exterior_color"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_excolor_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_incolor"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Interior Color"/>
+            android:text="@string/interior_color"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_incolor_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_drivetype"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Drive Type"/>
+            android:text="@string/drive_type"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_drivetype_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_transmission"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Transmission"/>
+            android:text="@string/transmission"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_transmission_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
 
         <TextView
             android:id="@+id/tv_activity_detail_bodystyle"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Body Style"/>
+            android:text="@string/body_style"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_bodystyle_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_engine_excolor"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Engine"/>
+            android:text="@string/engine"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_engine_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_fuel"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
             android:layout_margin="5dp"
-            android:text="Fuel"/>
+            android:text="@string/fuel"
+            style="@style/CarZoomTextView"/>
         <TextView
             android:id="@+id/tv_activity_detail_fuel_value"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            style="@style/CarZoomTextView"/>
 
     </GridLayout>
     <Button
         app:layout_constraintTop_toBottomOf="@id/gv_activity_detail_additional_info"
         android:id="@+id/button_activity_detail_call_dealer"
+        style="@style/PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="CALL DEALER"/>
+        android:text="@string/call_dealer"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

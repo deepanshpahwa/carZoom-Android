@@ -11,4 +11,13 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="preference_last_sync_key">com.example.carzoom.PREFERENCE_LAST_SYNC</string>
     <string name="preference_key">com.example.carzoom.PREFERENCE</string>
+    <string name="call_dealer">CALL DEALER</string>
+    <string name="location">Location</string>
+    <string name="exterior_color">Exterior Color</string>
+    <string name="interior_color">Interior Color</string>
+    <string name="drive_type">Drive Type</string>
+    <string name="transmission">Transmission</string>
+    <string name="body_style">Body Style</string>
+    <string name="engine">Engine</string>
+    <string name="fuel">Fuel</string>
 </resources>
