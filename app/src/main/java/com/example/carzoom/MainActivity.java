@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,95 +24,74 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener{
 
     private static final String TAG = "class::MainActivity";
-    RecyclerView carRecyvlerView;
+    RecyclerView carRecyclerView;
     Context context;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    ImageView imageView;
-    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        realm = Realm.getDefaultInstance();
         context = getBaseContext();
 
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-//                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
 
-        carRecyvlerView = findViewById(R.id.recycler_view_activity_main);
-        carRecyvlerView.setLayoutManager(new LinearLayoutManager(context));
-        View progressbar = findViewById(R.id.rl_activity_main_progress_bar);
+        carRecyclerView = findViewById(R.id.recycler_view_activity_main);
+        carRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        View progressBar = findViewById(R.id.progress_bar_activity_main);
 
         ResultsViewModel viewModel = new ViewModelProvider(this).get(ResultsViewModel.class);
         Observable<List<RelevantListingInfo>> resultsObservable = viewModel.makeFutureQuery(compositeDisposable);
-        if (resultsObservable != null) {
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-//                    .map(extractRelevantInfo)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<List<RelevantListingInfo>>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                            Log.d(TAG, "onSubscribe: called.");
-//                            d.//TODO
-                            compositeDisposable.add(d);
-                        }
+        resultsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<RelevantListingInfo>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe: called.");
+                        compositeDisposable.add(d);
+                    }
 
-                        @Override
-                        public void onNext(List<RelevantListingInfo> relevantListingInfos) {
-                            Log.d(TAG, "onNext: got the response from server!");
-                            Log.d(TAG, "onNext: " + relevantListingInfos.get(0));
-                            carRecyvlerView.setVisibility(View.VISIBLE);
-                            progressbar.setVisibility(View.GONE);
+                    @Override
+                    public void onNext(List<RelevantListingInfo> relevantListingInfos) {
+                        Log.d(TAG, "onNext: called");
+                        carRecyclerView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
 //                        addDataToDatabase(relevantListingInfos);
-                            displayData(relevantListingInfos);
-                            //TODO hide loading screen
+                        displayData(relevantListingInfos);
+                    }
 
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, e.getMessage());
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d("TAG", "onError:::::: " + "showing old data");
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            Log.d(TAG, "onComplete: called.");
-                        }
-                    });
-
-        }
-        else{
-            Log.d(TAG, "onCreate:::: Resulsts are null");
-            //TODO Toast
-        }
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: called.");
+                    }
+                });
     }
 
     private void displayData(List<RelevantListingInfo> posts ) {
-
-        if (posts==null) {
-            posts = realm.where(RelevantListingInfo.class).sort("position").findAll();
-        }
         RecyclerViewAdapter adapter;
         adapter = new RecyclerViewAdapter(getBaseContext(), posts);
         adapter.setClickListener(this);
-        carRecyvlerView.setAdapter(adapter);
+        carRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onItemClick(View view, String carId) {
         Intent myIntent = new Intent(this, DetailActivity.class);
-        myIntent.putExtra("carId", carId); //Optional parameters
+        myIntent.putExtra("carId", carId);
         this.startActivity(myIntent);
     }
 

@@ -39,10 +39,9 @@ public class DetailActivity extends AppCompatActivity {
         TextView carEngine = findViewById(R.id.tv_activity_detail_engine_value);
         TextView carFuel = findViewById(R.id.tv_activity_detail_fuel_value);
 
-        carInfo.setText(listing.getYear()+" "+listing.getMake()+" "+listing.getModel());
-        carPriceAndMileage.setText("$ "+listing.getLastPrice()+"  |  "+listing.getMileage()+" mi");
-
-        carLocation.setText(listing.getCity()+", "+listing.getState());
+        carInfo.setText(Utils.getTextForCarInfo(listing));
+        carPriceAndMileage.setText(Utils.getTextForCarMileage(listing));
+        carLocation.setText(Utils.getTextForCarLocation(listing));
         carExteriorColor.setText(listing.getExteriorColor());
         carInteriorColor.setText(listing.getInteriorColor());
         carDriveType.setText(listing.getDriveType());

@@ -31,11 +31,11 @@ public class Utils {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public static String readFromSharedPref(Application application, SharedPreferences sharedPref) {
+    public static String readTimeFromSharedPref(Application application, SharedPreferences sharedPref) {
         return sharedPref.getString(application.getString(R.string.preference_last_sync_key), "");
     }
 
-    public static void writeToSharedPref(Application application, SharedPreferences sharedPref) {
+    public static void writeTimeToSharedPref(Application application, SharedPreferences sharedPref) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(application.getString(R.string.preference_last_sync_key), DateTime.now().toString());
         editor.apply();
@@ -54,5 +54,12 @@ public class Utils {
     @NonNull
     public static String getTextForCarLocation(RelevantListingInfo listing) {
         return listing.getCity() + ", " + listing.getState();
+    }
+
+    public static boolean checkLocalDataCondition(String rawTimestamp) {
+        boolean isStale;
+        DateTime yesterday = DateTime.now().minusDays(1);
+        isStale = DateTime.parse(rawTimestamp).isBefore(yesterday);
+        return isStale;
     }
 }

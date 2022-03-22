@@ -11,20 +11,16 @@ import io.realm.Realm;
 
 public class RealmQueries {
 
-
     private static final String TAG = "RealmQueries";
 
     protected static void addDataToDatabase(List<RelevantListingInfo> listings) {
-//TODO async??
-        Log.d(TAG, "addDataToDatabase:::: adding data to database");
+        Log.d(TAG, "addDataToDatabase: adding data to database");
         Realm realm = Realm.getDefaultInstance() ;
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-//                realm.deleteAll();
-//                for(RelevantListingInfo info: listings) {
+                realm.deleteAll( );
                 realm.copyToRealm(listings);
-//                }
             }
         });
         realm.close();
@@ -36,4 +32,6 @@ public class RealmQueries {
                 realm.copyFromRealm(realm.where(RelevantListingInfo.class).findAllAsync())).publish().autoConnect();
     }
 
+    //Class to make additional Real Queries. If the apps functionality were to be extended,this
+    //is where the queries to filter listings would go
 }

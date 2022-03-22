@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.carzoom.R;
 import com.example.carzoom.RealmObjects.RelevantListingInfo;
@@ -11,8 +12,6 @@ import com.example.carzoom.Retrofit.RetrofitClient;
 import com.example.carzoom.Utils;
 import com.example.carzoom.pojos.Listing;
 import com.example.carzoom.pojos.Results;
-
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +40,9 @@ public class Repository{
     public Observable<List<RelevantListingInfo>> makeCarQuery(Application application, CompositeDisposable disposable) {
 
         Realm realm = Realm.getDefaultInstance() ;
-        Observable<List<RelevantListingInfo>> ret = null;
+        Observable<List<RelevantListingInfo>> listingObservable = null;
         SharedPreferences sharedPref = application.getSharedPreferences(application.getString(R.string.preference_key), Context.MODE_PRIVATE);
-        String rawTimestamp = Utils.readFromSharedPref(application, sharedPref);
+        String rawTimestamp = Utils.readTimeFromSharedPref(application, sharedPref);
 
         boolean isStale = false;
         boolean isFirstPull = false;
@@ -52,26 +51,23 @@ public class Repository{
             Log.d(TAG, "makeCarQuery: will be pulling for the first time");
         }
         if(!isFirstPull) {
-            DateTime yesterday = DateTime.now().minusDays(1);
-            isStale = DateTime.parse(rawTimestamp).isBefore(yesterday);
+            isStale = Utils.checkLocalDataCondition(rawTimestamp);
             if (isStale)Log.d(TAG, "makeCarQuery: is not first pull, data is stale");
             else Log.d(TAG, "makeCarQuery: is not first pull, data is NOT stale");
         }
 
-//TOdo
         if (isStale || isFirstPull){
-            Log.d(TAG, "makeCarQuery: data is  stale or  is first pull");
-//            if (isFirstPull){
+            Log.d(TAG, "makeCarQuery: data is stale or is first pull");
             if (!Utils.isNetworkConnected(application)){
-                //Toast no data no network
-                Log.d(TAG, "makeCarQuery: no network TOAST");
-                return ret;//check for errors
+                Toast.makeText(application, "No network connections. Please check your internet connection and try again!",
+                        Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "makeCarQuery: no network (TOAST)");
+                return listingObservable;
             }
 
-            ret = makeNetworkCall();
-            ret.subscribeOn(Schedulers.io())
+            listingObservable = makeNetworkCall();
+            listingObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-
                     .subscribe(new Observer<List<RelevantListingInfo>>() {
                 @Override
                 public void onSubscribe(Disposable d) {
@@ -81,26 +77,27 @@ public class Repository{
 
                 @Override
                 public void onNext(List<RelevantListingInfo> relevantListingInfos) {
-                    Utils.writeToSharedPref(application, sharedPref);
+                    Log.d(TAG, "onNext: called");
+                    Utils.writeTimeToSharedPref(application, sharedPref);
                     RealmQueries.addDataToDatabase(relevantListingInfos);
                 }
 
                 @Override
                 public void onError(Throwable e) {
-
+                    Log.e(TAG, "onError: ", e);
                 }
 
                 @Override
                 public void onComplete() {
-
+                    Log.d(TAG, "onComplete: called");
                 }
             });
 
         }else{
-            ret = RealmQueries.getFromLocalStorage(realm);
+            listingObservable = RealmQueries.getFromLocalStorage(realm);
         }
         realm.close();
-        return ret;
+        return listingObservable;
     }
 
     private Observable<List<RelevantListingInfo>> makeNetworkCall() {
@@ -108,7 +105,6 @@ public class Repository{
         Observable<List<RelevantListingInfo>> networkObservable = RetrofitClient.getInstance().getMyApi().getCars().map(extractRelevantInfo).replay().autoConnect();
         return networkObservable;
     }
-    //TODO make call to makeFutureQuery, on complete save data to realm db asynchronously and return the value fetched from api
 
     Function<Results, List<RelevantListingInfo>> extractRelevantInfo = new Function<Results, List<RelevantListingInfo>> () {
         @Override
