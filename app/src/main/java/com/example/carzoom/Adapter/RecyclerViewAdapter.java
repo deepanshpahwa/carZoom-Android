@@ -47,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Picasso.get()
                 .load(listing.getImageUrl())
                 .placeholder(R.drawable.ic_car)
-                .error(R.drawable.ic_car)
+                .error(R.drawable.ic_car_error)
                 .into(holder.carImageView);
     }
 
