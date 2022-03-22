@@ -50,7 +50,8 @@
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
             android:textAlignment="center"
-            android:text="@string/call_dealer" />
+            android:text="@string/call_dealer"
+            style="@style/CarZoomBoldTextView"/>
 
     </android.widget.LinearLayout>
 </androidx.cardview.widget.CardView>
