@@ -20,4 +20,5 @@
     <string name="body_style">Body Style</string>
     <string name="engine">Engine</string>
     <string name="fuel">Fuel</string>
+    <string name="vehicle_info">Vehicle Info</string>
 </resources>

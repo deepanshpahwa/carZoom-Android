@@ -8,6 +8,10 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
+import com.example.carzoom.RealmObjects.RelevantListingInfo;
+
 import org.joda.time.DateTime;
 
 public class Utils {
@@ -35,5 +39,20 @@ public class Utils {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(application.getString(R.string.preference_last_sync_key), DateTime.now().toString());
         editor.apply();
+    }
+
+    @NonNull
+    public static String getTextForCarInfo(RelevantListingInfo listing) {
+        return listing.getYear() + " " + listing.getMake() + " " + listing.getModel();
+    }
+
+    @NonNull
+    public static String getTextForCarMileage(RelevantListingInfo listing) {
+        return "$ " + listing.getLastPrice() + "  |  " + listing.getMileage() + " mi";
+    }
+
+    @NonNull
+    public static String getTextForCarLocation(RelevantListingInfo listing) {
+        return listing.getCity() + ", " + listing.getState();
     }
 }

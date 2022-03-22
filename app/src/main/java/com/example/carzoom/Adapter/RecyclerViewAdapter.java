@@ -39,9 +39,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         RelevantListingInfo listing = mData.get(position);
         holder.setCarID(listing.getId());
-        holder.carInfo.setText(listing.getYear()+" "+listing.getMake()+" "+listing.getModel());
-        holder.carMileage.setText("$ "+listing.getLastPrice()+"  |  "+listing.getMileage()+" mi");
-        holder.carLocation.setText(listing.getCity()+", "+listing.getState());
+        holder.carInfo.setText(Utils.getTextForCarInfo(listing));
+        holder.carMileage.setText(Utils.getTextForCarMileage(listing));
+        holder.carLocation.setText(Utils.getTextForCarLocation(listing));
         holder.callDealerButton.setOnClickListener(Utils.callDealerListener(context, listing.getPhone()));
 
         Picasso.get()
