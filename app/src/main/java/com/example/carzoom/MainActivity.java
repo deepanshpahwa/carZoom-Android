@@ -50,35 +50,37 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         ResultsViewModel viewModel = new ViewModelProvider(this).get(ResultsViewModel.class);
         Observable<List<RelevantListingInfo>> resultsObservable = viewModel.makeFutureQuery(compositeDisposable);
-        resultsObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<RelevantListingInfo>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe: called.");
-                        compositeDisposable.add(d);
-                    }
+        if (resultsObservable!=null) {
+            resultsObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<List<RelevantListingInfo>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.d(TAG, "onSubscribe: called.");
+                            compositeDisposable.add(d);
+                        }
 
-                    @Override
-                    public void onNext(List<RelevantListingInfo> relevantListingInfos) {
-                        Log.d(TAG, "onNext: called");
-                        carRecyclerView.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
+                        @Override
+                        public void onNext(List<RelevantListingInfo> relevantListingInfos) {
+                            Log.d(TAG, "onNext: called");
+                            carRecyclerView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
 //                        addDataToDatabase(relevantListingInfos);
-                        displayData(relevantListingInfos);
-                    }
+                            displayData(relevantListingInfos);
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, e.getMessage());
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG, e.getMessage());
+                        }
 
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "onComplete: called.");
-                    }
-                });
+                        @Override
+                        public void onComplete() {
+                            Log.d(TAG, "onComplete: called.");
+                        }
+                    });
+        }
     }
 
     private void displayData(List<RelevantListingInfo> posts ) {
